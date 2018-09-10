@@ -5,4 +5,8 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\OpenDota.NET\OpenDota.NET.csproj" />
+  </ItemGroup>
+
 </Project>
