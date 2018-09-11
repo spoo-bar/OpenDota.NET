@@ -14,9 +14,9 @@
             {
                 if (_playerSlotNumber >= 128)
                 {
-                    return Matches.Slot.Dire;
+                    return Slot.Dire;
                 }
-                return Matches.Slot.Radiant;
+                return Slot.Radiant;
             }
         }
         public int ExtraTime { get; set; }

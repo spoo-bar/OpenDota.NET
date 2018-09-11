@@ -79,7 +79,7 @@ namespace OpenDota.NET.Matches
         /// </summary>
         public Skill Skill { get; set; }
 
-        public Player Players { get; set; }
+        public IEnumerable<Player> Players { get; set; }
 
         /// <summary>
         /// Information on the patch version the game is played on

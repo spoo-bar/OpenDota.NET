@@ -1,6 +1,120 @@
-﻿namespace OpenDota.NET.Matches
+﻿using System;
+using System.Collections.Generic;
+
+namespace OpenDota.NET.Matches
 {
     public class Player
     {
+        public Slot Team { get; set; }
+
+        public IEnumerable<int> AbilityUpgrades { get; set; }
+        public dynamic AbilityUses { get; set; }
+        public dynamic AbilityTargets { get; set; }
+        public int AccountId { get; set; }
+        public dynamic Actions { get; set; }
+        public dynamic AdditionalUnits { get; set; }
+        public int Assists { get; set; }
+        public BackPack BackPackItems { get; set; }
+        public IEnumerable<BuybackLog> BuybackLogs { get; set; }
+        public int CampsStacked { get; set; }
+        public int CreepesStacked { get; set; }
+        public dynamic Damage { get; set; }
+        public dynamic DamageInflictor { get; set; }
+        public dynamic DamageInflictorReceived { get; set; }
+        public dynamic DamageTaken { get; set; }
+        public int Deaths { get; set; }
+        public int Denies { get; set; }
+        public IEnumerable<int> DeniesAtDIfferentTImes { get; set; }
+        public int Gold { get; set; }
+        public int GoldPerMinute { get; set; }
+        public dynamic GOldReasons { get; set; }
+        public int GoldSPent { get; set; }
+        public IEnumerable<int> GoldAtDifferentTImes { get; set; }
+        public int HeroDamage { get; set; }
+        public int HeroHealing { get; set; }
+        public int HeroHits { get; set; }
+        public int HeroId { get; set; }
+        public PlayerItems PlayerItems { get; set; }
+        public dynamic ItemUses { get; set; }
+        public dynamic KillStreaks { get; set; }
+        public dynamic Killed { get; set; }
+        public dynamic KilledBy { get; set; }
+        public int Kills { get; set; }
+        public IEnumerable<KillLog> KillLogs { get; set; }
+        public dynamic LastPosition { get; set; }
+        public int LastHits { get; set; }
+        public bool QuitGame { get; set; }
+        public int Level { get; set; }
+        public IEnumerable<int> LastHitsAtDifferentTimes { get; set; }
+        public dynamic LifeState { get; set; }
+        public dynamic MaxHeroHit { get; set; }
+        public dynamic MultiKills { get; set; }
+        public dynamic ObserverWards { get; set; }
+        public IEnumerable<dynamic> ObserverLeftLogs { get; set; }
+        public IEnumerable<dynamic> ObserverLogs { get; set; }
+        public int ObserverWardsPlaced { get; set; }
+        public int PartyId { get; set; }
+        public IEnumerable<PermanentBuffs> PermanentBuffs { get; set; }
+        public int Pings { get; set; }
+        public dynamic Purchases { get; set; }
+        public IEnumerable<PurchaseLog> PurchaseLogs { get; set; }
+        public int RunePickUps { get; set; }
+        public dynamic Runes { get; set; }
+        public IEnumerable<RunesLog> RunesLogs { get; set; }
+        public dynamic Sentries { get; set; }
+        public IEnumerable<dynamic> SentriesLeftLog { get; set; }
+        public IEnumerable<dynamic> SentriesLog { get; set; }
+        public int SentriesPlaced { get; set; }
+        public int Stuns { get; set; }
+        public dynamic Times { get; set; }
+        public int TowerDamage { get; set; }
+        public int XpPerMinute { get; set; }
+        public dynamic XpReasons { get; set; }
+        public IEnumerable<int> XpAtDIfferentTimes { get; set; }
+        public string PersonName { get; set; }
+        public string Name { get; set; }
+        public DateTime LastLogin { get; set; }
+        public bool RadianWIn { get; set; }
+        public int StartTime { get; set; }
+        public int Duration { get; set; }
+        public int Cluster { get; set; }
+        public LobbyType LobbyType { get; set; }
+        public GameMode GameMode { get; set; }
+        public int Patch { get; set; }
+        public int Region { get; set; }
+        public bool Won { get; set; }
+        public int TotalGOld { get; set; }
+        public int TotalXp { get; set; }
+        public int KillsPerMinute { get; set; }
+        public int KDA { get; set; }
+        public int Abandons { get; set; }
+        public int NeutralCreepsKilled { get; set; }
+        public int TowerKills { get; set; }
+        public int CourierKills { get; set; }
+        public int LaneKills { get; set; }
+        public int HeroKills { get; set; }
+        public int ObserverKills { get; set; }
+        public int SentryKills { get; set; }
+        public int RoshanKills { get; set; }
+        public int NecronomiconKills{ get; set; }
+        public int AncientKills { get; set; }
+        public int BuybackCount { get; set; }
+        public int ObserverUses { get; set; }
+        public int SentryUses { get; set; }
+        public int LaneEfficiency { get; set; }
+        public int LaneEfficiencyPct { get; set; }
+        public int Lane { get; set; }
+        public int LaneROle { get; set; }
+        public int IsRoamning { get; set; }
+        public dynamic PurchaseTIme { get; set; }
+        public dynamic FirstPurchaseTime { get; set; }
+        public dynamic ItemWIn { get; set; }
+        public dynamic ItemUsage { get; set; }
+        public dynamic NumberOfTpScrollPurchased { get; set; }
+        public int ActionsPerMinute { get; set; }
+        public int LifeStateDead { get; set; }
+        public int RankTier { get; set; }
+        public IEnumerable<int> Cosmetics { get; set; }
+        public dynamic Benchmarks { get; set; }
     }
 }
