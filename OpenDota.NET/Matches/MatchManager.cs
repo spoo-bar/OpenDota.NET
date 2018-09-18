@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace OpenDota.NET.Matches
 {
@@ -8,11 +9,27 @@ namespace OpenDota.NET.Matches
         public Match GetMatch(int matchId)
         {
             var client = OpenDotaAPIWrapper.Client;
-            var response = client.GetAsync(string.Format("matches/{0}", matchId)).Result;
-            if (response.IsSuccessStatusCode)
+            using (var response = client.GetAsync(string.Format("matches/{0}", matchId)).GetAwaiter().GetResult())
             {
-                var result = response.Content.ReadAsStringAsync().Result;
-                return Match.Deserialize(result);
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                    return Match.Deserialize(result);
+                }
+            }            
+            throw new Exception("Could not successfully get match data");
+        }
+
+        public async Task<Match> GetMatchAsync(int matchId)
+        {
+            var client = OpenDotaAPIWrapper.Client;
+            using (var response = await client.GetAsync(string.Format("matches/{0}", matchId)))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+                    return Match.Deserialize(result);
+                }
             }
             throw new Exception("Could not successfully get match data");
         }
