@@ -8,16 +8,7 @@ namespace OpenDota.NET.Matches
     {
         public Match GetMatch(int matchId)
         {
-            var client = OpenDotaAPIWrapper.Client;
-            using (var response = client.GetAsync(string.Format("matches/{0}", matchId)).GetAwaiter().GetResult())
-            {
-                if (response.IsSuccessStatusCode)
-                {
-                    var result = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                    return Match.Deserialize(result);
-                }
-            }            
-            throw new Exception("Could not successfully get match data");
+            return GetMatchAsync(matchId).GetAwaiter().GetResult();
         }
 
         public async Task<Match> GetMatchAsync(int matchId)
