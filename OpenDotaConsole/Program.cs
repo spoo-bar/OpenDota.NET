@@ -8,7 +8,7 @@ namespace OpenDotaConsole
         static void Main(string[] args)
         {
             var matchManager = new MatchManager();
-            matchManager.GetMatch(0);
+            matchManager.GetMatch(271145478);
             Console.WriteLine("Hello World!");
         }
     }

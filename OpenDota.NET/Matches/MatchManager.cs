@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace OpenDota.NET.Matches
 {
@@ -7,12 +8,13 @@ namespace OpenDota.NET.Matches
         public Match GetMatch(int matchId)
         {
             var client = OpenDotaAPIWrapper.Client;
-            var response = client.GetAsync("matches/271145478").Result;
+            var response = client.GetAsync(string.Format("matches/{0}", matchId)).Result;
             if (response.IsSuccessStatusCode)
             {
                 var result = response.Content.ReadAsStringAsync().Result;
+                return Match.Deserialize(result);
             }
-            return new Match();
+            throw new Exception("Could not successfully get match data");
         }
     }
 }

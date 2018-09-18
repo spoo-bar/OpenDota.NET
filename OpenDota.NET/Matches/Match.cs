@@ -100,5 +100,10 @@ namespace OpenDota.NET.Matches
         public int Loss { get; set; }
 
         public string ReplayUrl { get; set; }
+
+        public static Match Deserialize(string json)
+        {
+            return new Match();
+        }
     }
 }
