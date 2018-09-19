@@ -1,4 +1,6 @@
-﻿namespace OpenDota.NET.Matches
+﻿using System;
+
+namespace OpenDota.NET.Matches
 {
     public class Chat
     {
@@ -6,15 +8,15 @@
         /// <summary>
         /// Time in seconds at which message was sent
         /// </summary>
-        public int Time { get; set; }
+        public TimeSpan Time { get; set; }
         /// <summary>
         /// Name of player who sent the message
         /// </summary>
-        public string Unit { get; set; }
+        public string Player { get; set; }
         /// <summary>
         /// Message sent by the player
         /// </summary>
-        public string Key { get; set; }
+        public string Message { get; set; }
         /// <summary>
         /// Slot
         /// </summary>
