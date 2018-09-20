@@ -1,13 +1,15 @@
-﻿namespace OpenDota.NET.Matches
+﻿using Newtonsoft.Json.Linq;
+
+namespace OpenDota.NET.Matches
 {
     public class DraftTiming
     {
         internal int _playerSlotNumber { private get; set; }
-        public int Order { get; set; }
-        public bool Picked { get; set; }
+        public int Order { get; private set; }
+        public bool Picked { get; private set; }
         public bool Banned { get { return !Picked; } }
-        public int ActiveTeam { get; set; }
-        public int HeroID { get; set; }
+        public int ActiveTeam { get; private set; }
+        public int HeroID { get; private set; }
         public Slot PlayerSlot
         {
             get
@@ -19,8 +21,13 @@
                 return Slot.Radiant;
             }
         }
-        public int ExtraTime { get; set; }
-        public int TotalTimeTaken { get; set; }
+        public int ExtraTime { get; private set; }
+        public int TotalTimeTaken { get; private set; }
+
+        public static DraftTiming Deserialize(JToken json)
+        {
+            return new DraftTiming(); // TODO : Deserialize
+        }
 
     }
 }

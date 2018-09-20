@@ -173,13 +173,7 @@ namespace OpenDota.NET.Matches
             var pickBanArray = (JArray)responseJson["picks_bans"];
             foreach(var pickBanObject in pickBanArray)
             {
-                picksAndBans.Add(new PickBan {
-                    IsPick = (bool)pickBanObject["is_pick"],
-                    HeroId = (int)pickBanObject["hero_id"],
-                    Team = (int)pickBanObject["team"], // TODO : Figure out which team is which value
-                    Order = (int)pickBanObject["order"],
-                    MatchId = (int)pickBanObject["match_id"]
-                });
+                picksAndBans.Add(PickBan.Deserialize(pickBanObject));
             }
 
             return picksAndBans.OrderBy(pb => pb.Order);
@@ -192,7 +186,7 @@ namespace OpenDota.NET.Matches
             var draftTimingArray = (JArray)responseJson["draft_timings"];
             foreach(var draftTimingObject in draftTimingArray)
             {
-                draftTimings.Add(new DraftTiming()); // TODO : Deserialize
+                draftTimings.Add(DraftTiming.Deserialize(draftTimingObject)); 
             }
 
             return draftTimings;
@@ -205,12 +199,7 @@ namespace OpenDota.NET.Matches
             var chatArray = (JArray)responseJson["chat"];
             foreach(var chat in chatArray)
             {
-                chats.Add(new Chat
-                {
-                    Message = (string)chat["key"],
-                    Time = TimeSpan.FromSeconds((int)chat["time"]),
-                    Player = (string)chat["unit"],
-                });
+                chats.Add(Chat.Deserialize(chat));
             }
 
             return chats;
