@@ -11,6 +11,7 @@
         RandkedSolo = 6,
         Ranked = 7,
         Mid1v1 = 8,
-        BattleCup = 9
+        BattleCup = 9,
+        Unknown
     }
 }

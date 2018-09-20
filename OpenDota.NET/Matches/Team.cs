@@ -1,8 +1,16 @@
-﻿namespace OpenDota.NET.Matches
+﻿using System;
+
+namespace OpenDota.NET.Matches
 {
     public class Team
     {
         public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        public string Tag { get; set; }
+
+        public Uri LogoUrl { get; set; }
 
         public int Score { get; set; }
 

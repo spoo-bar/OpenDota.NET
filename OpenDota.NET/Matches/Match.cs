@@ -60,10 +60,12 @@ namespace OpenDota.NET.Matches
         /// </summary>
         public int PositiveVotes { get; set; }
 
-        public DateTime StartTime { get; set; }
+        public TimeSpan StartTime { get; set; }
 
         public dynamic TeamFights { get; set; }
-                
+
+        public int Version { get; set; }
+
         public int ReplaySalt { get; set; }
 
         public int SeriesId { get; set; }
@@ -97,11 +99,15 @@ namespace OpenDota.NET.Matches
 
         public dynamic   MyWordCounts { get; set; }
 
+        public dynamic Comeback { get; set; }
+
+        public dynamic Stomp { get; set; }
+
         public int Throw { get; set; }
 
         public int Loss { get; set; }
 
-        public string ReplayUrl { get; set; }
+        public Uri ReplayUrl { get; set; }
 
         public static Match Deserialize(string json)
         {
@@ -117,15 +123,45 @@ namespace OpenDota.NET.Matches
             match.MatchDuration = TimeSpan.FromSeconds((int)responseJson["duration"]);
             match.Engine = (int)responseJson["engine"]; // TODO : Replace with enum?
             match.FirstBloodTime = TimeSpan.FromSeconds((int)responseJson["first_blood_time"]);
-            match.GameMode = (GameMode)(int)responseJson["game_mode"];
+
+            if ((int?)responseJson["game_mode"] != null)
+                match.GameMode = (GameMode)(int)responseJson["game_mode"];
+            else
+                match.GameMode = GameMode.Unknown;
+
             match.HumanPlayers = (int)responseJson["human_players"];
             match.LeagueId = (int)responseJson["leagueid"];
-            match.LobbyType = (LobbyType)(int)responseJson["lobby_type"];
+
+            if ((int?)responseJson["lobby_type"] != null)
+                match.LobbyType = (LobbyType)(int)responseJson["lobby_type"];
+            else
+                match.LobbyType = LobbyType.Unknown;
+
             match.MatchSequenceNumber = (int)responseJson["match_seq_num"];
             match.NegativeVotes = (int)responseJson["negative_votes"];
             match.PositiveVotes = (int)responseJson["positive_votes"];
             match.Objectives = responseJson["objectives"]; // TODO : Deserialize and replace dynamic type with a class (if possible ?)
             match.PicksBans = GetPicksAndBans(responseJson);
+
+            if ((int?)responseJson["skill"] != null)
+                match.Skill = (Skill)(int)responseJson["skill"];
+            else
+                match.Skill = Skill.Unknown;
+
+            match.StartTime = TimeSpan.FromSeconds((int)responseJson["start_time"]);
+            match.TeamFights = responseJson["teamfights"]; // TODO : Deserialize and replace dynamic type with a class 
+            match.Version = (int)responseJson["version"];
+            match.ReplaySalt = (int)responseJson["replay_salt"];
+            match.SeriesId = (int)responseJson["series_id"];
+            match.SeriesType = (int)responseJson["series_type"];
+            match.League = responseJson["league"];  // TODO : Deserialize and replace dynamic type with a class 
+            match.Patch = (int)responseJson["patch"];
+            match.Region = (int)responseJson["region"]; // TODO : Replace as enum
+            match.AllWordCounts = responseJson["all_word_counts"]; // TODO : Deserialize and replace dynamic type with a class 
+            match.MyWordCounts = responseJson["my_word_counts"]; // TODO : Deserialize and replace dynamic type with a class 
+            match.Comeback = responseJson["comeback"]; // TODO : Deserialize and replace dynamic type with a class 
+            match.Stomp = responseJson["stomp"]; // TODO : Deserialize and replace dynamic type with a class 
+            match.ReplayUrl = new Uri(responseJson["replay_url"].ToString());
 
             return match;
         }
@@ -184,8 +220,15 @@ namespace OpenDota.NET.Matches
         {
             var team = new Team();
             team.BarrackStatus = (int)responseJson["barracks_status_dire"];
+            team.GoldAdvantage = responseJson["dire_gold_adv"]; // TODO : This data not returned from API. Remove this property?
             team.Score = (int)responseJson["dire_score"];
             team.Id = (int)responseJson["dire_team_id"];
+            team.WonGame = !(bool)responseJson["radiant_win"];
+            team.ExperienceAdvantage = responseJson["dire_xp_adv"]; // TODO : This data not returned from API. Remove this property?
+            team.TowerStatus = (int)responseJson["tower_status_dire"];
+            team.Name = responseJson["dire_team"]["name"].ToString();
+            team.Tag = responseJson["dire_team"]["tag"].ToString();
+            team.LogoUrl = new Uri(responseJson["dire_team"]["logo_url"].ToString());
             return team;
         }
 
@@ -198,6 +241,10 @@ namespace OpenDota.NET.Matches
             team.Id = (int)responseJson["radiant_team_id"];
             team.WonGame = (bool)responseJson["radiant_win"];
             team.ExperienceAdvantage = responseJson["radiant_xp_adv"]; // TODO : Deserialize and replace dynamic type with a class
+            team.TowerStatus = (int)responseJson["tower_status_radiant"];
+            team.Name = responseJson["radiant_team"]["name"].ToString();
+            team.Tag = responseJson["radiant_team"]["tag"].ToString();
+            team.LogoUrl = new Uri(responseJson["radiant_team"]["logo_url"].ToString());
             return team;
         }
     }

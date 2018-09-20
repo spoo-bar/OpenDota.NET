@@ -4,6 +4,7 @@
     {
         Normal,
         High,
-        VeryHigh
+        VeryHigh,
+        Unknown
     }
 }
