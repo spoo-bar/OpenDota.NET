@@ -155,6 +155,7 @@ namespace OpenDota.NET.Matches
             match.SeriesId = (int)responseJson["series_id"];
             match.SeriesType = (int)responseJson["series_type"];
             match.League = responseJson["league"];  // TODO : Deserialize and replace dynamic type with a class 
+            match.Players = GetPlayers(responseJson);
             match.Patch = (int)responseJson["patch"];
             match.Region = (int)responseJson["region"]; // TODO : Replace as enum
             match.AllWordCounts = responseJson["all_word_counts"]; // TODO : Deserialize and replace dynamic type with a class 
@@ -164,6 +165,19 @@ namespace OpenDota.NET.Matches
             match.ReplayUrl = new Uri(responseJson["replay_url"].ToString());
 
             return match;
+        }
+
+        private static IEnumerable<Player> GetPlayers(JObject responseJson)
+        {
+            var players = new List<Player>();
+
+            var playersArray = (JArray)responseJson["players"];
+            foreach(var playerObject in playersArray)
+            {
+                players.Add(Player.Deserialize(playerObject));
+            }
+
+            return players;
         }
 
         private static IEnumerable<PickBan> GetPicksAndBans(JObject responseJson)
