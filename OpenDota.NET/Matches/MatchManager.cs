@@ -1,18 +1,28 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace OpenDota.NET.Matches
 {
     public class MatchManager
     {
-        public Match GetMatch(int matchId)
+        public Match GetMatch(long matchId)
+        {
+            return GetMatchAsync(matchId).GetAwaiter().GetResult();
+        }
+
+        public async Task<Match> GetMatchAsync(long matchId)
         {
             var client = OpenDotaAPIWrapper.Client;
-            var response = client.GetAsync("matches/271145478").Result;
-            if (response.IsSuccessStatusCode)
+            using (var response = await client.GetAsync(string.Format("matches/{0}", matchId)))
             {
-                var result = response.Content.ReadAsStringAsync().Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+                    return Match.Deserialize(result);
+                }
             }
-            return new Match();
+            throw new Exception("Could not successfully get match data");
         }
     }
 }

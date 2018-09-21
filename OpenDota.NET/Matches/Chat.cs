@@ -1,24 +1,27 @@
-﻿namespace OpenDota.NET.Matches
+﻿using System;
+using Newtonsoft.Json.Linq;
+
+namespace OpenDota.NET.Matches
 {
     public class Chat
     {
-        internal int _playerSlotNumber { private get; set; }
+        private int _playerSlotNumber { get; set; }
         /// <summary>
         /// Time in seconds at which message was sent
         /// </summary>
-        public int Time { get; set; }
+        public TimeSpan Time { get; private set; }
         /// <summary>
         /// Name of player who sent the message
         /// </summary>
-        public string Unit { get; set; }
+        public string Player { get; private set; }
         /// <summary>
         /// Message sent by the player
         /// </summary>
-        public string Key { get; set; }
+        public string Message { get; private set; }
         /// <summary>
         /// Slot
         /// </summary>
-        public int Slot { get; set; }
+        public int Slot { get; private set; }
         /// <summary>
         /// Which slot the player is in
         /// </summary>
@@ -32,6 +35,16 @@
                 }
                 return Matches.Slot.Radiant;
             }
+        }
+
+        public static Chat Deserialize(JToken json)
+        {
+            return new Chat
+            {
+                Message = (string)json["key"],
+                Time = TimeSpan.FromSeconds((int)json["time"]),
+                Player = (string)json["unit"],
+            };
         }
     }
 }
