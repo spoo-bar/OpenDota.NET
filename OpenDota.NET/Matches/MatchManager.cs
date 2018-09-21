@@ -6,12 +6,12 @@ namespace OpenDota.NET.Matches
 {
     public class MatchManager
     {
-        public Match GetMatch(int matchId)
+        public Match GetMatch(long matchId)
         {
             return GetMatchAsync(matchId).GetAwaiter().GetResult();
         }
 
-        public async Task<Match> GetMatchAsync(int matchId)
+        public async Task<Match> GetMatchAsync(long matchId)
         {
             var client = OpenDotaAPIWrapper.Client;
             using (var response = await client.GetAsync(string.Format("matches/{0}", matchId)))

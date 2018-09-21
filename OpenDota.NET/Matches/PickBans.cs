@@ -9,7 +9,7 @@ namespace OpenDota.NET.Matches
         public int HeroId { get; private set; }
         public int Team { get; private set; }
         public int Order { get; private set; }
-        public int MatchId { get; private set; }
+        public long MatchId { get; private set; }
 
         public static PickBan Deserialize(JToken json)
         {
@@ -19,7 +19,7 @@ namespace OpenDota.NET.Matches
                 HeroId = (int)json["hero_id"],
                 Team = (int)json["team"], // TODO : Figure out which team is which value
                 Order = (int)json["order"],
-                MatchId = (int)json["match_id"]
+                MatchId = (long)json["match_id"]
             };
         }
     }

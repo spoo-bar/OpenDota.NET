@@ -7,7 +7,7 @@ namespace OpenDota.NET.Matches
 {
     public class Match
     {
-        public int Id { get; internal set; }
+        public long Id { get; internal set; }
 
         public IEnumerable<Chat> Chats { get; internal set; }
 
@@ -44,7 +44,7 @@ namespace OpenDota.NET.Matches
 
         public LobbyType LobbyType { get; set; }
 
-        public int MatchSequenceNumber { get; set; }
+        public long MatchSequenceNumber { get; set; }
 
         /// <summary>
         /// Number of negative votes the replay received in the in-game client
@@ -113,7 +113,7 @@ namespace OpenDota.NET.Matches
         {
             var match = new Match();
             var responseJson = JObject.Parse(json);
-            match.Id = (int)responseJson["match_id"];
+            match.Id = (long)responseJson["match_id"];
             match.Dire = GetDireDetails(responseJson);
             match.Radiant = GetRadiantDetails(responseJson);
             match.Chats = GetMatchChat(responseJson);
@@ -137,7 +137,7 @@ namespace OpenDota.NET.Matches
             else
                 match.LobbyType = LobbyType.Unknown;
 
-            match.MatchSequenceNumber = (int)responseJson["match_seq_num"];
+            match.MatchSequenceNumber = (long)responseJson["match_seq_num"];
             match.NegativeVotes = (int)responseJson["negative_votes"];
             match.PositiveVotes = (int)responseJson["positive_votes"];
             match.Objectives = responseJson["objectives"]; // TODO : Deserialize and replace dynamic type with a class (if possible ?)
@@ -223,11 +223,11 @@ namespace OpenDota.NET.Matches
         {
             var team = new Team();
             team.BarrackStatus = (int)responseJson["barracks_status_dire"];
-            team.GoldAdvantage = responseJson["dire_gold_adv"]; // TODO : This data not returned from API. Remove this property?
+            team.GoldAdvantage = responseJson["dire_gold_adv"];
             team.Score = (int)responseJson["dire_score"];
             team.Id = (int)responseJson["dire_team_id"];
             team.WonGame = !(bool)responseJson["radiant_win"];
-            team.ExperienceAdvantage = responseJson["dire_xp_adv"]; // TODO : This data not returned from API. Remove this property?
+            team.ExperienceAdvantage = responseJson["dire_xp_adv"];
             team.TowerStatus = (int)responseJson["tower_status_dire"];
             team.Name = responseJson["dire_team"]["name"].ToString();
             team.Tag = responseJson["dire_team"]["tag"].ToString();
@@ -239,11 +239,11 @@ namespace OpenDota.NET.Matches
         {
             var team = new Team();
             team.BarrackStatus = (int)responseJson["barracks_status_radiant"];
-            team.GoldAdvantage = responseJson["radiant_gold_adv"]; // TODO : Deserialize and replace dynamic type with a class
+            team.GoldAdvantage = responseJson["radiant_gold_adv"];
             team.Score = (int)responseJson["radiant_score"];
             team.Id = (int)responseJson["radiant_team_id"];
             team.WonGame = (bool)responseJson["radiant_win"];
-            team.ExperienceAdvantage = responseJson["radiant_xp_adv"]; // TODO : Deserialize and replace dynamic type with a class
+            team.ExperienceAdvantage = responseJson["radiant_xp_adv"];
             team.TowerStatus = (int)responseJson["tower_status_radiant"];
             team.Name = responseJson["radiant_team"]["name"].ToString();
             team.Tag = responseJson["radiant_team"]["tag"].ToString();
