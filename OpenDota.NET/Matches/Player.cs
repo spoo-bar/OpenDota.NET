@@ -137,7 +137,7 @@ namespace OpenDota.NET.Matches
         public int LifeStateDead { get; set; }
         public int RankTier { get; set; }
         public IEnumerable<int> Cosmetics { get; set; }
-        public dynamic Benchmarks { get; set; }
+        public BenchMarks Benchmarks { get; set; }
 
         internal static Player Deserialize(JToken json)
         {
@@ -258,7 +258,7 @@ namespace OpenDota.NET.Matches
             player.LifeStateDead = json.Value<int>("life_state_dead");
             player.RankTier = (int?)json["rank_tier"] == null ? 0 : (int)json["rank_tier"];
             player.Cosmetics = GetCosmetics(json);
-            player.Benchmarks = json["benchmarks"]; // TODO : Deserialize and replace dynamic type with a class 
+            player.Benchmarks = BenchMarks.Deserialize(json["benchmarks"]);
 
             return player;
         }
