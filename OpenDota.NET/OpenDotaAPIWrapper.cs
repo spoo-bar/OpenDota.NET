@@ -23,6 +23,5 @@ namespace OpenDota.NET
                 return _client;
             }
         }
-
     }
 }
