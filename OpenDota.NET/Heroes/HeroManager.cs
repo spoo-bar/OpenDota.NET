@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace OpenDota.NET.Heroes
@@ -27,7 +28,7 @@ namespace OpenDota.NET.Heroes
                         heroes.Add(Hero.Deserialize(hero));
                     }
 
-                    return heroes;
+                    return heroes.OrderBy(h => h.LocalizedName);
                 }
             }
             throw new Exception("Could not successfully get heroes data");

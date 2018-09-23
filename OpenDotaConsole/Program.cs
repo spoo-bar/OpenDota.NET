@@ -10,13 +10,13 @@ namespace OpenDotaConsole
         static void Main(string[] args)
         {
             var matchManager = new MatchManager();
-            matchManager.GetMatch(4078566725);
+            var match = matchManager.GetMatch(4078566725);
 
             var playerManager = new PlayerManager();
-            playerManager.GetProPlayers();
+            var proPlayers = playerManager.GetProPlayers();
 
             var heroManager = new HeroManager();
-            heroManager.GetHeroesStats();
+            var heroesStats = heroManager.GetHeroesStats();
 
             Console.WriteLine("Hello World!");
         }
