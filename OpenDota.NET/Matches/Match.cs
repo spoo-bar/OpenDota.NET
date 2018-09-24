@@ -230,11 +230,16 @@ namespace OpenDota.NET.Matches
             team.WonGame = !(bool)responseJson["radiant_win"];
             team.ExperienceAdvantage = responseJson["dire_xp_adv"];
             team.TowerStatus = (int)responseJson["tower_status_dire"];
-            team.Name = responseJson["dire_team"]["name"].ToString();
-            team.Tag = responseJson["dire_team"]["tag"].ToString();
 
-            if(responseJson["dire_team"]["logo_url"].Type != JTokenType.Null)
-                team.LogoUrl = new Uri(responseJson["dire_team"]["logo_url"].ToString());
+            if (responseJson["dire_team"] != null && responseJson["dire_team"].Type != JTokenType.Null)
+            {
+                team.Name = responseJson["dire_team"]["name"].ToString();
+                team.Tag = responseJson["dire_team"]["tag"].ToString();
+
+                if (responseJson["dire_team"]["logo_url"].Type != JTokenType.Null)
+                    team.LogoUrl = new Uri(responseJson["dire_team"]["logo_url"].ToString());
+            }
+
             return team;
         }
 
@@ -248,11 +253,15 @@ namespace OpenDota.NET.Matches
             team.WonGame = (bool)responseJson["radiant_win"];
             team.ExperienceAdvantage = responseJson["radiant_xp_adv"];
             team.TowerStatus = (int)responseJson["tower_status_radiant"];
-            team.Name = responseJson["radiant_team"]["name"].ToString();
-            team.Tag = responseJson["radiant_team"]["tag"].ToString();
 
-            if(responseJson["radiant_team"]["logo_url"].Type != JTokenType.Null)
-                team.LogoUrl = new Uri(responseJson["radiant_team"]["logo_url"].ToString());
+            if (responseJson["radiant_team"] != null && responseJson["radiant_team"].Type != JTokenType.Null)
+            {
+                team.Name = responseJson["radiant_team"]["name"].ToString();
+                team.Tag = responseJson["radiant_team"]["tag"].ToString();
+
+                if (responseJson["radiant_team"]["logo_url"].Type != JTokenType.Null)
+                    team.LogoUrl = new Uri(responseJson["radiant_team"]["logo_url"].ToString());
+            }
 
             return team;
         }
