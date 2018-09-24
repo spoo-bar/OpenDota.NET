@@ -11,6 +11,8 @@ namespace OpenDotaConsole
         {
             var matchManager = new MatchManager();
             var match = matchManager.GetMatch(4078566725);
+            var proMatchesSummary = matchManager.GetProMatchesDetails();
+            var proMatches = matchManager.GetProMatches();
 
             var playerManager = new PlayerManager();
             var proPlayers = playerManager.GetProPlayers();
