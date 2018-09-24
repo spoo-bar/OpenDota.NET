@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 
@@ -60,15 +61,31 @@ namespace OpenDota.NET.Matches
             throw new Exception("Could not successfully get pro matches data");
         }
 
-        public IEnumerable<PublicMatch> GetPublicMatches()
+        /// <summary>
+        /// Get 100 public matches which match the criteria
+        /// </summary>
+        /// <param name="mmrAscending">Order by MMR ascending</param>
+        /// <param name="mmrDescending">Order by MMR descending</param>
+        /// <param name="matchId">Get matches with a match ID lower than this value</param>
+        /// <returns>A list of public matches</returns>
+        public IEnumerable<PublicMatch> GetPublicMatches(int? mmrAscending = null, int? mmrDescending = null, long? matchId = null)
         {
-            return GetPublicMatchesAsync().GetAwaiter().GetResult();
+            return GetPublicMatchesAsync(mmrAscending, mmrDescending, matchId).GetAwaiter().GetResult();
         }
 
-        public async Task<IEnumerable<PublicMatch>> GetPublicMatchesAsync()
+        /// <summary>
+        /// Get 100 public matches which match the criteria
+        /// </summary>
+        /// <param name="mmrAscending">Order by MMR ascending</param>
+        /// <param name="mmrDescending">Order by MMR descending</param>
+        /// <param name="matchId">Get matches with a match ID lower than this value</param>
+        /// <returns>A task which returns the list of public matches</returns>
+        public async Task<IEnumerable<PublicMatch>> GetPublicMatchesAsync(int? mmrAscending = null, int? mmrDescending = null, long? matchId = null)
         {
             var client = OpenDotaAPIWrapper.Client;
-            using (var response = await client.GetAsync("publicmatches"))
+
+            var queryString = GetQueryString(mmrAscending, mmrDescending, matchId);
+            using (var response = await client.GetAsync(string.Format("publicmatches?{0}", queryString)))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -84,7 +101,7 @@ namespace OpenDota.NET.Matches
                 }
             }
             throw new Exception("Could not successfully get public matches data");
-        }
+        }        
 
         [Obsolete("OpenDota endpoint is accessed over hundred times. Do not use unless you have an api key. Alternatively you can use GetProMatchesDetails and get details for required matches individually using GetMatch.", false)]
         public IEnumerable<ProMatch> GetProMatches()
@@ -103,6 +120,25 @@ namespace OpenDota.NET.Matches
             }
 
             return proMatches;
+        }
+
+        private string GetQueryString(int? mmrAscending, int? mmrDescending, long? matchId)
+        {
+            var queryStringParameters = new List<KeyValuePair<string, string>>();
+            if(mmrAscending != null)
+            {
+                queryStringParameters.Add(new KeyValuePair<string, string>("mmr_ascending", mmrAscending.ToString()));
+            }
+            if(mmrDescending != null)
+            {
+                queryStringParameters.Add(new KeyValuePair<string, string>("mmr_descending", mmrDescending.ToString()));
+            }
+            if(matchId != null)
+            {
+                queryStringParameters.Add(new KeyValuePair<string, string>("less_than_match_id", matchId.ToString()));
+            }
+            var keyValuePairsJoined = queryStringParameters.Select(q => string.Format("{0}={1}", q.Key, q.Value));
+            return String.Join('&', keyValuePairsJoined);
         }
     }
 }
