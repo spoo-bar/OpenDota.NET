@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
+using OpenDota.NET.Extensions;
 
 namespace OpenDota.NET.Matches
 {
@@ -233,7 +234,7 @@ namespace OpenDota.NET.Matches
             player.Won = (int)json["win"] == 0 ? false : true;
             player.TotalGold = (int)json["total_gold"];
             player.TotalXp = (int)json["total_xp"];
-            player.KillsPerMinute = (double)json["kills_per_min"];
+            player.KillsPerMinute = json.Value<double>("kills_per_min", 0);
             player.KDA = (int)json["kda"];
             player.Abandons = (int)json["abandons"];
             player.NeutralCreepsKilled = (int)json["neutral_kills"];

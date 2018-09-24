@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
+using OpenDota.NET.Extensions;
 
 namespace OpenDota.NET.Matches
 {
@@ -225,13 +226,15 @@ namespace OpenDota.NET.Matches
             team.BarrackStatus = (int)responseJson["barracks_status_dire"];
             team.GoldAdvantage = responseJson["dire_gold_adv"];
             team.Score = (int)responseJson["dire_score"];
-            team.Id = (int)responseJson["dire_team_id"];
+            team.Id = responseJson.Value<int>("dire_team_id", 0);
             team.WonGame = !(bool)responseJson["radiant_win"];
             team.ExperienceAdvantage = responseJson["dire_xp_adv"];
             team.TowerStatus = (int)responseJson["tower_status_dire"];
             team.Name = responseJson["dire_team"]["name"].ToString();
             team.Tag = responseJson["dire_team"]["tag"].ToString();
-            team.LogoUrl = new Uri(responseJson["dire_team"]["logo_url"].ToString());
+
+            if(responseJson["dire_team"]["logo_url"].Type != JTokenType.Null)
+                team.LogoUrl = new Uri(responseJson["dire_team"]["logo_url"].ToString());
             return team;
         }
 
@@ -247,7 +250,10 @@ namespace OpenDota.NET.Matches
             team.TowerStatus = (int)responseJson["tower_status_radiant"];
             team.Name = responseJson["radiant_team"]["name"].ToString();
             team.Tag = responseJson["radiant_team"]["tag"].ToString();
-            team.LogoUrl = new Uri(responseJson["radiant_team"]["logo_url"].ToString());
+
+            if(responseJson["radiant_team"]["logo_url"].Type != JTokenType.Null)
+                team.LogoUrl = new Uri(responseJson["radiant_team"]["logo_url"].ToString());
+
             return team;
         }
     }
