@@ -26,12 +26,20 @@ namespace OpenDota.NET.Matches
             throw new Exception("Could not successfully get match data");
         }
 
-        public IEnumerable<ProMatch> GetProMatchesSummary()
+        /// <summary>
+        /// Get the last 100 pro matches details
+        /// </summary>
+        /// <returns>A list of pro matches details</returns>
+        public IEnumerable<ProMatch> GetProMatchesDetails()
         {
-            return GetProMatchesSummaryAsync().GetAwaiter().GetResult();
+            return GetProMatchesDetailsAsync().GetAwaiter().GetResult();
         }
 
-        public async Task<IEnumerable<ProMatch>> GetProMatchesSummaryAsync()
+        /// <summary>
+        /// Get the last 100 pro matches details asynchronously
+        /// </summary>
+        /// <returns>A task which returns a list of pro matches details</returns>
+        public async Task<IEnumerable<ProMatch>> GetProMatchesDetailsAsync()
         {
             var client = OpenDotaAPIWrapper.Client;
             using (var response = await client.GetAsync("promatches"))
@@ -52,16 +60,16 @@ namespace OpenDota.NET.Matches
             throw new Exception("Could not successfully get pro matches data");
         }
 
-        [Obsolete("OpenDota endpoint is accessed over hundred times. Do not use unless you have an api key. Alternatively you can use GetProMatchesSummary and get details for required matches individually using GetMatch.", false)]
+        [Obsolete("OpenDota endpoint is accessed over hundred times. Do not use unless you have an api key. Alternatively you can use GetProMatchesDetails and get details for required matches individually using GetMatch.", false)]
         public IEnumerable<ProMatch> GetProMatches()
         {
             return GetProMatchesAsync().GetAwaiter().GetResult();
         }
 
-        [Obsolete("OpenDota endpoint is accessed over hundred times. Do not use unless you have an api key. Alternatively you can use GetProMatchesSummaryAsync and get details for required matches individually using GetMatchAsync.", false)]
+        [Obsolete("OpenDota endpoint is accessed over hundred times. Do not use unless you have an api key. Alternatively you can use GetProMatchesDetailsAsync and get details for required matches individually using GetMatchAsync.", false)]
         public async Task<IEnumerable<ProMatch>> GetProMatchesAsync()
         {
-            var proMatches = await GetProMatchesSummaryAsync();
+            var proMatches = await GetProMatchesDetailsAsync();
 
             foreach(var proMatch in proMatches)
             {
