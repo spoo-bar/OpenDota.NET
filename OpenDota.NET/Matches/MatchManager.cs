@@ -52,11 +52,13 @@ namespace OpenDota.NET.Matches
             throw new Exception("Could not successfully get pro matches data");
         }
 
+        [Obsolete("OpenDota endpoint is accessed over hundred times. Do not use unless you have an api key. Alternatively you can use GetProMatchesSummary and get details for required matches individually using GetMatch.", false)]
         public IEnumerable<ProMatch> GetProMatches()
         {
             return GetProMatchesAsync().GetAwaiter().GetResult();
         }
 
+        [Obsolete("OpenDota endpoint is accessed over hundred times. Do not use unless you have an api key. Alternatively you can use GetProMatchesSummaryAsync and get details for required matches individually using GetMatchAsync.", false)]
         public async Task<IEnumerable<ProMatch>> GetProMatchesAsync()
         {
             var proMatches = await GetProMatchesSummaryAsync();
