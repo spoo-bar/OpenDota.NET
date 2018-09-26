@@ -33,5 +33,25 @@ namespace OpenDota.NET.Players
             }
             throw new Exception("Could not successfully get proplayers data");
         }
+
+        public Player GetPlayer(int accountId)
+        {
+            return GetPlayerAsync(accountId).GetAwaiter().GetResult();
+        }
+
+        public async Task<Player> GetPlayerAsync(int accountId)
+        {
+            var client = OpenDotaAPIWrapper.Client;
+            using (var response = await client.GetAsync(string.Format("players/{0}", accountId)))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+                    
+                    return Player.Deserialize(result);
+                }
+            }
+            throw new Exception("Could not successfully get proplayers data");
+        }
     }
 }
