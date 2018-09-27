@@ -18,6 +18,13 @@ namespace OpenDotaConsole
             var playerManager = new PlayerManager();
             var proPlayers = playerManager.GetProPlayers();
             var player = playerManager.GetPlayer(186347237);
+            var query = new PlayerWinLossQuery
+            {
+                Limit = 100,
+                Offset = 10,
+                Won = true,
+            };
+            var playerWL = playerManager.GetPlayerWinLossCount(186347237, query);
 
             var heroManager = new HeroManager();
             var heroesStats = heroManager.GetHeroesStats();

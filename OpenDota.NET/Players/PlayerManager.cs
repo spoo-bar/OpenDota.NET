@@ -51,7 +51,27 @@ namespace OpenDota.NET.Players
                     return Player.Deserialize(result);
                 }
             }
-            throw new Exception("Could not successfully get proplayers data");
+            throw new Exception("Could not successfully get player data");
+        }
+
+        public WinLoss GetPlayerWinLossCount(int accountId, PlayerWinLossQuery query = null)
+        {
+            return GetPlayerWinLossCountAsync(accountId, query).GetAwaiter().GetResult();
+        }
+
+        public async Task<WinLoss> GetPlayerWinLossCountAsync(int accountId, PlayerWinLossQuery query = null)
+        {
+            var client = OpenDotaAPIWrapper.Client;
+            var queryStringParam = PlayerWinLossQuery.GetQueryString(query);
+            using (var response = await client.GetAsync(string.Format("players/{0}/wl?{1}", accountId, queryStringParam)))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+                    return WinLoss.Deserialize(result);
+                }
+            }
+            throw new Exception("Could not successfully get player win loss data");
         }
     }
 }
