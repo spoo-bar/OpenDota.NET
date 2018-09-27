@@ -26,6 +26,9 @@ namespace OpenDota.NET.Players
 
         public string CountryCode { get; private set; }
 
+        /// <summary>
+        /// Boolean indicating if the user contributed to the development of OpenDota
+        /// </summary>
         public bool IsContributor { get; private set; }
 
         internal static Profile Deserialize(JToken json)

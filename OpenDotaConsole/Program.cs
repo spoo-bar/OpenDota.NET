@@ -17,6 +17,7 @@ namespace OpenDotaConsole
 
             var playerManager = new PlayerManager();
             var proPlayers = playerManager.GetProPlayers();
+            var player = playerManager.GetPlayer(186347237);
 
             var heroManager = new HeroManager();
             var heroesStats = heroManager.GetHeroesStats();

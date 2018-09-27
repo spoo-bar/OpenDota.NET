@@ -1,5 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json.Linq;
+using OpenDota.NET.Extensions;
 
 namespace OpenDota.NET.Players
 {
@@ -7,7 +8,9 @@ namespace OpenDota.NET.Players
     {
         public string TrackedUntil { get; private set; }
 
-        public string SoloCompetitiveRank { get; private set; }
+        public int SoloMMR { get; private set; }
+
+        public int PartyMMR { get; private set; }
 
         public int RankTier { get; private set; }
 
@@ -23,9 +26,10 @@ namespace OpenDota.NET.Players
             return new Player
             {
                 TrackedUntil = json.Value<string>("tracked_until"),
-                SoloCompetitiveRank = json.Value<string>("solo_competitive_rank"),
-                RankTier = json.Value<int>("rank_tier"),
-                LeaderboardRank = json.Value<int>("leaderboard_rank"),
+                SoloMMR = json.Value<int>("solo_competitive_rank", 0),
+                PartyMMR = json.Value<int>("competitive_rank", 0),
+                RankTier = json.Value<int>("rank_tier", 0),
+                LeaderboardRank = json.Value<int>("leaderboard_rank", 0),
                 MMREstimate = MMREstimate.Deserialize(json["mmr_estimate"]),
                 Profile = Profile.Deserialize(json["profile"])
             };

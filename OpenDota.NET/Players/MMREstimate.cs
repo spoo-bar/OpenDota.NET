@@ -1,5 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json.Linq;
+using OpenDota.NET.Extensions;
 
 namespace OpenDota.NET.Players
 {
@@ -15,9 +16,9 @@ namespace OpenDota.NET.Players
         {
             return new MMREstimate
             {
-                Estimate = json.Value<int>("estimate"),
-                StdDev = json.Value<int>("stdDev"),
-                N = json.Value<int>("n"),
+                Estimate = json.Value<int>("estimate", 0),
+                StdDev = json.Value<int>("stdDev", 0),
+                N = json.Value<int>("n", 0),
             };
         }
     }
