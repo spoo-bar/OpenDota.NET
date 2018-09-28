@@ -40,6 +40,7 @@ namespace OpenDotaConsole
                 Won = true
             };
             var playerWL = playerManager.GetPlayerWinLossCount(186347237, query);
+            var matches = playerManager.GetRecentMatches(186347237);
 
             var heroManager = new HeroManager();
             var heroesStats = heroManager.GetHeroesStats();

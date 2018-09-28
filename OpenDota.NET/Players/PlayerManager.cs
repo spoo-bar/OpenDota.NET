@@ -73,5 +73,32 @@ namespace OpenDota.NET.Players
             }
             throw new Exception("Could not successfully get player win loss data");
         }
+
+        public IEnumerable<Match> GetRecentMatches(int accountId)
+        {
+            return GetRecentMatchesAsync(accountId).GetAwaiter().GetResult();
+        }
+
+        public async Task<IEnumerable<Match>> GetRecentMatchesAsync(int accountId)
+        {
+            var client = OpenDotaAPIWrapper.Client;
+            using (var response = await client.GetAsync(string.Format("players/{0}/recentMatches", accountId)))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+
+                    var recentMatches = new List<Match>();
+
+                    foreach(var match in JArray.Parse(result))
+                    {
+                        recentMatches.Add(Match.Deserialize(match));
+                    }
+
+                    return recentMatches;
+                }
+            }
+            throw new Exception("Could not successfully get player's recent match data");
+        }
     }
 }
