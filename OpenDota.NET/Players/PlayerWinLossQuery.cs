@@ -5,7 +5,7 @@ using OpenDota.NET.Matches;
 
 namespace OpenDota.NET.Players
 {
-    public class PlayerWinLossQuery
+    public class MatchSearchQuery
     {
         /// <summary>
         /// Number of matches to limit to
@@ -97,7 +97,12 @@ namespace OpenDota.NET.Players
         /// </summary>
         public bool? SortByDescending { get; set; }
 
-        internal static string GetQueryString(PlayerWinLossQuery query)
+        /// <summary>
+        /// Fields to project 
+        /// </summary>
+        public IEnumerable<string> Projects { get; set; }
+
+        internal static string GetQueryString(MatchSearchQuery query)
         {
             if(query != null)
             {
@@ -190,6 +195,12 @@ namespace OpenDota.NET.Players
                 if (query.SortByDescending != null && query.SortByDescending.HasValue)
                 {
                     queryStringParameters.Add(new KeyValuePair<string, string>("sort", Convert.ToInt16(query.SortByDescending.Value).ToString()));
+                }
+
+                if(query.Projects != null && query.Projects.Count() > 0)
+                {
+                    var values = GetIEnumerableValuesAsString(query.Projects);
+                    queryStringParameters.Add(new KeyValuePair<string, string>("project", values));
                 }
 
                 var keyValuePairsJoined = queryStringParameters.Select(q => string.Format("{0}={1}", q.Key, q.Value));

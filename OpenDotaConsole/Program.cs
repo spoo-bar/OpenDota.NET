@@ -19,7 +19,7 @@ namespace OpenDotaConsole
             var playerManager = new PlayerManager();
             var proPlayers = playerManager.GetProPlayers();
             var player = playerManager.GetPlayer(186347237);
-            var query = new PlayerWinLossQuery
+            var query = new MatchSearchQuery
             {
                 AgainstHeroIDs = new List<int> { },
                 DaysPrevious = TimeSpan.FromDays(4),
@@ -40,7 +40,8 @@ namespace OpenDotaConsole
                 Won = true
             };
             var playerWL = playerManager.GetPlayerWinLossCount(186347237, query);
-            var matches = playerManager.GetRecentMatches(186347237);
+            var recentMatches = playerManager.GetRecentMatches(186347237);
+            var matches = playerManager.GetMatches(186347237, new MatchSearchQuery { Limit = 1, Projects = new List<string> { "heroes" } });
 
             var heroManager = new HeroManager();
             var heroesStats = heroManager.GetHeroesStats();

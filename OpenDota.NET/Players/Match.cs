@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json.Linq;
 using OpenDota.NET.Extensions;
 using OpenDota.NET.Matches;
@@ -122,38 +124,62 @@ namespace OpenDota.NET.Players
 
         public int LastHits { get; private set; }
 
+        /// <summary>
+        /// List of Heroes played by players in the match
+        /// Required project heroes in query
+        /// </summary>
+        public IEnumerable<PlayerHero> Heroes { get; set; }
+
         internal static Match Deserialize(JToken json)
         {
             var match = new Match
             {
-                MatchID = json.Value<long>("match_id", 0),
-                _playerSlotNumber = json.Value<int>("player_slot", 0),
-                RadiantWin = json.Value<bool>("radiant_win", false),
+                MatchID = json.Value("match_id", (long)0),
+                _playerSlotNumber = json.Value("player_slot", 0),
+                RadiantWin = json.Value("radiant_win", false),
                 Duration = TimeSpan.FromSeconds(json.Value<long>("duration")),
-                GameMode = (GameMode)json.Value<int>("game_mode", 0),
-                LobbyType = (LobbyType)json.Value<int>("lobby_type", 11),
-                HeroId = json.Value<int>("hero_id", 0),
+                GameMode = (GameMode)json.Value("game_mode", 0),
+                LobbyType = (LobbyType)json.Value("lobby_type", 11),
+                HeroId = json.Value("hero_id", 0),
                 StartTime = DateTimeOffset.FromUnixTimeSeconds(json.Value<long>("start_time")).DateTime,
                 Version = json.Value<string>("version"),
-                Kills = json.Value<int>("kills", 0),
-                Deaths = json.Value<int>("deaths", 0),
-                Assists = json.Value<int>("assists", 0),
-                Skill = (Skill)json.Value<int>("skill", 3),
+                Kills = json.Value("kills", 0),
+                Deaths = json.Value("deaths", 0),
+                Assists = json.Value("assists", 0),
+                Skill = (Skill)json.Value("skill", 3),
                 XpPerMinute = json.Value<double>("xp_per_min"),
                 GoldPerMinute = json.Value<double>("gold_per_min"),
-                HeroDamage = json.Value<int>("hero_damage", 0),
-                TowerDamage = json.Value<int>("tower_damage", 0),
-                HeroHealing = json.Value<int>("hero_healing", 0),
-                LastHits = json.Value<int>("last_hits", 0),
-                Lane = json.Value<int>("lane", 0),
-                LaneRole = json.Value<int>("lane_role", 0),
-                IsRoaming = json.Value<bool>("is_roaming", false),
-                Cluster = json.Value<int>("cluster", 0),
+                HeroDamage = json.Value("hero_damage", 0),
+                TowerDamage = json.Value("tower_damage", 0),
+                HeroHealing = json.Value("hero_healing", 0),
+                LastHits = json.Value("last_hits", 0),
+                Lane = json.Value("lane", 0),
+                LaneRole = json.Value("lane_role", 0),
+                IsRoaming = json.Value("is_roaming", false),
+                Cluster = json.Value("cluster", 0),
                 LeaverStatus = (LeaverStatus)json.Value<int>("leaver_status"),
-                PartySize = json.Value<int>("party_size", 0)
+                PartySize = json.Value("party_size", 0),
+                Heroes = GetPlayerHeroes(json["heroes"])
             };
 
             return match;
+        }
+
+        private static IEnumerable<PlayerHero> GetPlayerHeroes(JToken json)
+        {
+            if(json != null && json.Type != JTokenType.Null)
+            {
+                var playerHeroes = new List<PlayerHero>();
+                for(var i = 0; i <= 255; i++)
+                {
+                    if(json[i.ToString()] != null && json[i.ToString()].Type != JTokenType.Null)
+                    {
+                        playerHeroes.Add(PlayerHero.Deserialize(json[i.ToString()]));
+                    }
+                }
+                return playerHeroes.OrderBy(p => p.Slot);
+            }
+            return null;
         }
     }
 }
