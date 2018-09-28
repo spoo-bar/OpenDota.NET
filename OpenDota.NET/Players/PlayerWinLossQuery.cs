@@ -25,7 +25,7 @@ namespace OpenDota.NET.Players
         /// <summary>
         /// Patch ID
         /// </summary>
-        public double? PatchId { get; set; }
+        private string PatchId { get; set; }
 
         /// <summary>
         /// Game Mode 
@@ -45,7 +45,7 @@ namespace OpenDota.NET.Players
         /// <summary>
         /// Days previous
         /// </summary>
-        public int? DaysPrevious { get; set; }
+        public TimeSpan? DaysPrevious { get; set; }
 
         /// <summary>
         /// Lane Role ID
@@ -102,23 +102,105 @@ namespace OpenDota.NET.Players
             if(query != null)
             {
                 var queryStringParameters = new List<KeyValuePair<string, string>>();
+
                 if(query.Limit != null && query.Limit.HasValue)
                 {
                     queryStringParameters.Add(new KeyValuePair<string, string>("limit", query.Limit.Value.ToString()));
                 }
+
                 if(query.Offset != null && query.Offset.HasValue)
                 {
                     queryStringParameters.Add(new KeyValuePair<string, string>("offset", query.Offset.Value.ToString()));
                 }
+
                 if(query.Won != null && query.Won.HasValue)
                 {
                     queryStringParameters.Add(new KeyValuePair<string, string>("win", Convert.ToInt16(query.Won.Value).ToString()));
+                }
+
+                if(query.GameMode != null  && query.GameMode.HasValue)
+                {
+                    queryStringParameters.Add(new KeyValuePair<string, string>("game_mode", ((int)query.GameMode.Value).ToString()));
+                }
+
+                if (query.LobbyType != null && query.LobbyType.HasValue)
+                {
+                    queryStringParameters.Add(new KeyValuePair<string, string>("lobby_type", ((int)query.LobbyType.Value).ToString()));
+                }
+
+                if (query.RegionId != null && query.RegionId.HasValue)
+                {
+                    queryStringParameters.Add(new KeyValuePair<string, string>("region", query.RegionId.Value.ToString()));
+                }
+
+                if (query.DaysPrevious != null && query.DaysPrevious.HasValue)
+                {
+                    queryStringParameters.Add(new KeyValuePair<string, string>("date", query.DaysPrevious.Value.Days.ToString()));
+                }
+
+                if(query.LaneRoleId != null && query.LaneRoleId.HasValue)
+                {
+                    queryStringParameters.Add(new KeyValuePair<string, string>("lane_role", query.LaneRoleId.Value.ToString()));
+                }
+
+                if(query.HeroId != null && query.HeroId.HasValue)
+                {
+                    queryStringParameters.Add(new KeyValuePair<string, string>("hero_id", query.HeroId.Value.ToString()));
+                }
+
+                if(query.IsRadiant != null && query.IsRadiant.HasValue)
+                {
+                    queryStringParameters.Add(new KeyValuePair<string, string>("is_radiant", Convert.ToInt16(query.IsRadiant.Value).ToString()));
+                }
+
+                if(query.IncludedAccountIDs != null && query.IncludedAccountIDs.Count() > 0)
+                {
+                    var values = GetIEnumerableValuesAsString(query.IncludedAccountIDs);
+                    queryStringParameters.Add(new KeyValuePair<string, string>("included_account_id", values));
+                }
+
+                if(query.ExcludedAccountIDs != null && query.ExcludedAccountIDs.Count() > 0)
+                {
+                    var values = GetIEnumerableValuesAsString(query.ExcludedAccountIDs);
+                    queryStringParameters.Add(new KeyValuePair<string, string>("excluded_account_id", values));
+                }
+
+                if(query.IncludedHeroIDs != null && query.IncludedHeroIDs.Count() > 0)
+                {
+                    var values = GetIEnumerableValuesAsString(query.IncludedHeroIDs);
+                    queryStringParameters.Add(new KeyValuePair<string, string>("with_hero_id", values));
+                }
+
+                if(query.AgainstHeroIDs != null && query.AgainstHeroIDs.Count() > 0)
+                {
+                    var values = GetIEnumerableValuesAsString(query.AgainstHeroIDs);
+                    queryStringParameters.Add(new KeyValuePair<string, string>("against_hero_id", values));
+                }
+
+                if(query.Significant != null && query.Significant.HasValue)
+                {
+                    queryStringParameters.Add(new KeyValuePair<string, string>("significant", Convert.ToInt16(query.Significant.Value).ToString()));
+                }
+
+                if(query.Having != null && query.Having.HasValue)
+                {
+                    queryStringParameters.Add(new KeyValuePair<string, string>("having", query.Having.Value.ToString()));
+                }
+
+                if (query.SortByDescending != null && query.SortByDescending.HasValue)
+                {
+                    queryStringParameters.Add(new KeyValuePair<string, string>("sort", Convert.ToInt16(query.SortByDescending.Value).ToString()));
                 }
 
                 var keyValuePairsJoined = queryStringParameters.Select(q => string.Format("{0}={1}", q.Key, q.Value));
                 return String.Join('&', keyValuePairsJoined);
             }
             return string.Empty; 
+        }
+
+        private static string GetIEnumerableValuesAsString<T>(IEnumerable<T> includedAccountIDs)
+        {
+            return String.Join(',', includedAccountIDs.Select(i => i.ToString()));
         }
     }
 }

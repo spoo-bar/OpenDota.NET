@@ -2,6 +2,7 @@
 using OpenDota.NET.Matches;
 using OpenDota.NET.Players;
 using System;
+using System.Collections.Generic;
 
 namespace OpenDotaConsole
 {
@@ -20,9 +21,23 @@ namespace OpenDotaConsole
             var player = playerManager.GetPlayer(186347237);
             var query = new PlayerWinLossQuery
             {
-                Limit = 100,
-                Offset = 10,
-                Won = true,
+                AgainstHeroIDs = new List<int> { },
+                DaysPrevious = TimeSpan.FromDays(4),
+                ExcludedAccountIDs = new List<long> { },
+                GameMode = GameMode.CaptainsMode,
+                Having = 2,
+                HeroId = 1234,
+                IncludedAccountIDs = new List<long> { },
+                IncludedHeroIDs = new List<int> { },
+                IsRadiant = true,
+                LaneRoleId = 1,
+                Limit = 20,
+                LobbyType = LobbyType.RankedTeam,
+                Offset = 1,
+                RegionId = 1,
+                Significant = true,
+                SortByDescending = false,
+                Won = true
             };
             var playerWL = playerManager.GetPlayerWinLossCount(186347237, query);
 
