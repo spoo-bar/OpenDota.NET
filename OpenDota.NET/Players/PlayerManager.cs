@@ -146,15 +146,43 @@ namespace OpenDota.NET.Players
 
                     var heroes = new List<PlayerHeroStats>();
 
-                    foreach (var match in JArray.Parse(result))
+                    foreach (var hero in JArray.Parse(result))
                     {
-                        heroes.Add(PlayerHeroStats.Deserialize(match));
+                        heroes.Add(PlayerHeroStats.Deserialize(hero));
                     }
 
                     return heroes;
                 }
             }
-            throw new Exception("Could not successfully get player's match data");
+            throw new Exception("Could not successfully get player's heroes data");
+        }
+
+        public IEnumerable<Peer> GetPeers(int accountId, SearchQuery query = null)
+        {
+            return GetPeersAsync(accountId, query).GetAwaiter().GetResult();
+        }
+
+        public async Task<IEnumerable<Peer>> GetPeersAsync(int accountId, SearchQuery query = null)
+        {
+            var client = OpenDotaAPIWrapper.Client;
+            var queryStringParam = SearchQuery.GetQueryString(query);
+            using (var response = await client.GetAsync(string.Format("players/{0}/peers?{1}", accountId, queryStringParam)))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+
+                    var peers = new List<Peer>();
+
+                    foreach (var peer in JArray.Parse(result))
+                    {
+                        peers.Add(Peer.Deserialize(peer));
+                    }
+
+                    return peers;
+                }
+            }
+            throw new Exception("Could not successfully get player's peers data");
         }
     }
 }

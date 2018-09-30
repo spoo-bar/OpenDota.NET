@@ -43,6 +43,7 @@ namespace OpenDotaConsole
             var recentMatches = playerManager.GetRecentMatches(186347237);
             var matches = playerManager.GetMatches(186347237, new SearchQuery { Limit = 1, Projects = new List<string> { "heroes" } });
             var heroes = playerManager.GetHeroes(186347237);
+            var peers = playerManager.GetPeers(186347237);
 
             var heroManager = new HeroManager();
             var heroesStats = heroManager.GetHeroesStats();
