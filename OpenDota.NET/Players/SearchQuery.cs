@@ -5,7 +5,7 @@ using OpenDota.NET.Matches;
 
 namespace OpenDota.NET.Players
 {
-    public class MatchSearchQuery
+    public class SearchQuery
     {
         /// <summary>
         /// Number of matches to limit to
@@ -102,7 +102,7 @@ namespace OpenDota.NET.Players
         /// </summary>
         public IEnumerable<string> Projects { get; set; }
 
-        internal static string GetQueryString(MatchSearchQuery query)
+        internal static string GetQueryString(SearchQuery query)
         {
             if(query != null)
             {

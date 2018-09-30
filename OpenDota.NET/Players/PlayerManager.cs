@@ -54,15 +54,15 @@ namespace OpenDota.NET.Players
             throw new Exception("Could not successfully get player data");
         }
 
-        public WinLoss GetPlayerWinLossCount(int accountId, MatchSearchQuery query = null)
+        public WinLoss GetPlayerWinLossCount(int accountId, SearchQuery query = null)
         {
             return GetPlayerWinLossCountAsync(accountId, query).GetAwaiter().GetResult();
         }
 
-        public async Task<WinLoss> GetPlayerWinLossCountAsync(int accountId, MatchSearchQuery query = null)
+        public async Task<WinLoss> GetPlayerWinLossCountAsync(int accountId, SearchQuery query = null)
         {
             var client = OpenDotaAPIWrapper.Client;
-            var queryStringParam = MatchSearchQuery.GetQueryString(query);
+            var queryStringParam = SearchQuery.GetQueryString(query);
             using (var response = await client.GetAsync(string.Format("players/{0}/wl?{1}", accountId, queryStringParam)))
             {
                 if (response.IsSuccessStatusCode)
@@ -101,33 +101,60 @@ namespace OpenDota.NET.Players
             throw new Exception("Could not successfully get player's recent match data");
         }
 
-        public IEnumerable<Match> GetMatches(int accountId, MatchSearchQuery query = null)
+        public IEnumerable<Match> GetMatches(int accountId, SearchQuery query = null)
         {
             return GetMatchesAsync(accountId, query).GetAwaiter().GetResult();
         }
 
-        public async Task<IEnumerable<Match>> GetMatchesAsync(int accountId, MatchSearchQuery query = null)
+        public async Task<IEnumerable<Match>> GetMatchesAsync(int accountId, SearchQuery query = null)
         {
             var client = OpenDotaAPIWrapper.Client;
-            var queryStringParam = MatchSearchQuery.GetQueryString(query);
+            var queryStringParam = SearchQuery.GetQueryString(query);
             using (var response = await client.GetAsync(string.Format("players/{0}/matches?{1}", accountId, queryStringParam)))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var result = await response.Content.ReadAsStringAsync();
 
-                    var recentMatches = new List<Match>();
+                    var matches = new List<Match>();
 
                     foreach (var match in JArray.Parse(result))
                     {
-                        recentMatches.Add(Match.Deserialize(match));
+                        matches.Add(Match.Deserialize(match));
                     }
 
-                    return recentMatches;
+                    return matches;
                 }
             }
             throw new Exception("Could not successfully get player's match data");
         }
 
+        public IEnumerable<PlayerHeroStats> GetHeroes(int accountId, SearchQuery query = null)
+        {
+            return GetHeroesAsync(accountId, query).GetAwaiter().GetResult();
+        }
+
+        public async Task<IEnumerable<PlayerHeroStats>> GetHeroesAsync(int accountId, SearchQuery query = null)
+        {
+            var client = OpenDotaAPIWrapper.Client;
+            var queryStringParam = SearchQuery.GetQueryString(query);
+            using (var response = await client.GetAsync(string.Format("players/{0}/heroes?{1}", accountId, queryStringParam)))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+
+                    var heroes = new List<PlayerHeroStats>();
+
+                    foreach (var match in JArray.Parse(result))
+                    {
+                        heroes.Add(PlayerHeroStats.Deserialize(match));
+                    }
+
+                    return heroes;
+                }
+            }
+            throw new Exception("Could not successfully get player's match data");
+        }
     }
 }
