@@ -236,5 +236,26 @@ namespace OpenDota.NET.Players
 
             throw new Exception("Could not successfully get player's stats");
         }
+
+        public Counts GetCounts(int accountId, SearchQuery query = null)
+        {
+            return GetCountsAsync(accountId, query).GetAwaiter().GetResult();
+        }
+
+        public async Task<Counts> GetCountsAsync(int accountId, SearchQuery query = null)
+        {
+            var client = OpenDotaAPIWrapper.Client;
+            var queryStringParam = SearchQuery.GetQueryString(query);
+            using (var response = await client.GetAsync(string.Format("players/{0}/counts?{1}", accountId, queryStringParam)))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+                    return Counts.Deserialize(result);
+                }
+            }
+
+            throw new Exception("Could not successfully get player's counts");
+        }
     }
 }
