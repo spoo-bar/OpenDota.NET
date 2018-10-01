@@ -190,7 +190,7 @@ namespace OpenDota.NET.Players
             return GetProPeersAsync(accountId, query).GetAwaiter().GetResult();
         }
 
-        private async Task<IEnumerable<ProPeer>> GetProPeersAsync(int accountId, SearchQuery query)
+        public async Task<IEnumerable<ProPeer>> GetProPeersAsync(int accountId, SearchQuery query)
         {
             var client = OpenDotaAPIWrapper.Client;
             var queryStringParam = SearchQuery.GetQueryString(query);
