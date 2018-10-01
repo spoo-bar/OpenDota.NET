@@ -210,5 +210,31 @@ namespace OpenDota.NET.Players
 
             throw new Exception("Could not successfully get player's pro peers data");
         }
+               
+        public IEnumerable<TotalStats> GetStats(int accountId, SearchQuery query = null)
+        {
+            return GetStatsAsync(accountId, query).GetAwaiter().GetResult();
+        }
+
+        public async Task<IEnumerable<TotalStats>> GetStatsAsync(int accountId, SearchQuery query = null)
+        {
+            var client = OpenDotaAPIWrapper.Client;
+            var queryStringParam = SearchQuery.GetQueryString(query);
+            using (var response = await client.GetAsync(string.Format("players/{0}/totals?{1}", accountId, queryStringParam)))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+                    var totals = new List<TotalStats>();
+                    foreach (var stat in JArray.Parse(result))
+                    {
+                        totals.Add(TotalStats.Deserialize(stat));
+                    }
+                    return totals;
+                }
+            }
+
+            throw new Exception("Could not successfully get player's stats");
+        }
     }
 }
