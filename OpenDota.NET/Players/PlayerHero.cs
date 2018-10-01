@@ -5,11 +5,11 @@ namespace OpenDota.NET.Players
 {
     public class PlayerHero
     {
-        public int Slot { get; set; }
+        public int Slot { get; private set; }
 
-        public long AccountId { get; set; }
+        public long AccountId { get; private set; }
 
-        public int HeroID { get; set; }
+        public int HeroID { get; private set; }
 
         internal static PlayerHero Deserialize(JToken json)
         {
