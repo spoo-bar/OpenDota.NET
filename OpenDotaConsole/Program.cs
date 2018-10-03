@@ -47,6 +47,7 @@ namespace OpenDotaConsole
             var proPeers = playerManager.GetProPeers(186347237);
             var stats = playerManager.GetStats(186347237);
             var counts = playerManager.GetCounts(186347237);
+            var histogram = playerManager.GetHistogramData(186347237, HistogramField.NeutralKills);
 
             var heroManager = new HeroManager();
             var heroesStats = heroManager.GetHeroesStats();
