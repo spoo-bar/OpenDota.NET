@@ -1,4 +1,5 @@
-﻿using OpenDota.NET.Heroes;
+﻿using OpenDota.NET.Explorer;
+using OpenDota.NET.Heroes;
 using OpenDota.NET.Matches;
 using OpenDota.NET.Players;
 using System;
@@ -56,6 +57,9 @@ namespace OpenDotaConsole
 
             var heroManager = new HeroManager();
             var heroesStats = heroManager.GetHeroesStats();
+
+            var explorer = new Explorer();
+            var data = explorer.ExecuteSQL("SELECT * FROM matches LIMIT 10");
             
             Console.WriteLine("Hello World!");
         }
