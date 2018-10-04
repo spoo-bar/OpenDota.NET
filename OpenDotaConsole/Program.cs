@@ -1,4 +1,5 @@
-﻿using OpenDota.NET.Heroes;
+﻿using OpenDota.NET;
+using OpenDota.NET.Heroes;
 using OpenDota.NET.Matches;
 using OpenDota.NET.Players;
 using System;
@@ -56,6 +57,8 @@ namespace OpenDotaConsole
 
             var heroManager = new HeroManager();
             var heroesStats = heroManager.GetHeroesStats();
+
+            var metaData = OpenDotA.GetMetaData();
             
             Console.WriteLine("Hello World!");
         }
