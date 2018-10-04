@@ -353,6 +353,33 @@ namespace OpenDota.NET.Players
             throw new Exception("Could not successfully get player's ratings");
         }
 
+        public IEnumerable<Ranking> GetRankings(int accountId)
+        {
+            return GetRankingsAsync(accountId).GetAwaiter().GetResult();
+        }
+
+        public async Task<IEnumerable<Ranking>> GetRankingsAsync(int accountId)
+        {
+            var client = OpenDotaAPIWrapper.Client;
+            using (var response = await client.GetAsync(string.Format("players/{0}/rankings", accountId)))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+
+                    var rankings = new List<Ranking>();
+
+                    foreach (var item in JArray.Parse(result))
+                    {
+                        rankings.Add(Ranking.Deserialize(item));
+                    }
+
+                    return rankings;
+                }
+            }
+            throw new Exception("Could not successfully get player's rankings");
+        }
+
         private static string GetField(HistogramField field)
         {
             switch (field)
