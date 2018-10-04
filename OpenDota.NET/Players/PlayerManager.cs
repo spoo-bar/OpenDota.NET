@@ -380,6 +380,19 @@ namespace OpenDota.NET.Players
             throw new Exception("Could not successfully get player's rankings");
         }
 
+        public async Task Refresh(int accountId)
+        {
+            var client = OpenDotaAPIWrapper.Client;
+            using (var response = await client.PostAsync(string.Format("players/{0}/refresh", accountId), null))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    return;
+                }
+            }
+            throw new Exception("Could not refresh player's data");
+        }
+
         private static string GetField(HistogramField field)
         {
             switch (field)

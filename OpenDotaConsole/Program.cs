@@ -52,10 +52,11 @@ namespace OpenDotaConsole
             var wordCloud = playerManager.GetWordCloud(186347237);
             var ratings = playerManager.GetRatings(186347237);
             var rankings = playerManager.GetRankings(186347237);
+            playerManager.Refresh(186347237);
 
             var heroManager = new HeroManager();
             var heroesStats = heroManager.GetHeroesStats();
-
+            
             Console.WriteLine("Hello World!");
         }
     }
