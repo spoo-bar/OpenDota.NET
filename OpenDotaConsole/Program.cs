@@ -49,6 +49,8 @@ namespace OpenDotaConsole
             var counts = playerManager.GetCounts(186347237);
             var histogram = playerManager.GetHistogramData(186347237, HistogramField.NeutralKills);
             var wardmap = playerManager.GetWarmap(186347237);
+            var wordCloud = playerManager.GetWordCloud(186347237);
+            var ratings = playerManager.GetRatings(186347237);
 
             var heroManager = new HeroManager();
             var heroesStats = heroManager.GetHeroesStats();

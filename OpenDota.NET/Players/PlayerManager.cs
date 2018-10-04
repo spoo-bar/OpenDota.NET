@@ -305,6 +305,54 @@ namespace OpenDota.NET.Players
             throw new Exception("Could not successfully get player's wardmap data");
         }
 
+        public WordCloud GetWordCloud(int accountId, SearchQuery query = null)
+        {
+            return GetWordCloudAsync(accountId, query).GetAwaiter().GetResult();
+        }
+
+        public async Task<WordCloud> GetWordCloudAsync(int accountId, SearchQuery query = null)
+        {
+            var client = OpenDotaAPIWrapper.Client;
+            var queryStringParam = SearchQuery.GetQueryString(query);
+            using (var response = await client.GetAsync(string.Format("players/{0}/wordcloud", accountId)))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+                    return WordCloud.Deserialize(result);
+                }
+            }
+
+            throw new Exception("Could not successfully get player's wordcloud");
+        }
+
+        public IEnumerable<Rating> GetRatings(int accountId)
+        {
+            return GetRatingsAsync(accountId).GetAwaiter().GetResult();
+        }
+
+        public async Task<IEnumerable<Rating>> GetRatingsAsync(int accountId)
+        {
+            var client = OpenDotaAPIWrapper.Client;
+            using (var response = await client.GetAsync(string.Format("players/{0}/ratings", accountId)))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+
+                    var ratings = new List<Rating>();
+
+                    foreach (var item in JArray.Parse(result))
+                    {
+                        ratings.Add(Rating.Deserialize(item));
+                    }
+
+                    return ratings;
+                }
+            }
+            throw new Exception("Could not successfully get player's ratings");
+        }
+
         private static string GetField(HistogramField field)
         {
             switch (field)
