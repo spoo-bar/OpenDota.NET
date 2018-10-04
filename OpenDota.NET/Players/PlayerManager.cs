@@ -284,6 +284,27 @@ namespace OpenDota.NET.Players
             throw new Exception("Could not successfully get player's data");
         }
 
+        public WardMap GetWarmap(int accountId, SearchQuery query = null)
+        {
+            return GetWardmapAsync(accountId, query).GetAwaiter().GetResult();
+        }
+
+        public async Task<WardMap> GetWardmapAsync(int accountId, SearchQuery query = null)
+        {
+            var client = OpenDotaAPIWrapper.Client;
+            var queryStringParam = SearchQuery.GetQueryString(query);
+            using (var response = await client.GetAsync(string.Format("players/{0}/wardmap", accountId)))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+                    return WardMap.Deserialize(result);
+                }
+            }
+
+            throw new Exception("Could not successfully get player's wardmap data");
+        }
+
         private static string GetField(HistogramField field)
         {
             switch (field)
