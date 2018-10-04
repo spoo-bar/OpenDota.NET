@@ -47,10 +47,16 @@ namespace OpenDotaConsole
             var proPeers = playerManager.GetProPeers(186347237);
             var stats = playerManager.GetStats(186347237);
             var counts = playerManager.GetCounts(186347237);
+            var histogram = playerManager.GetHistogramData(186347237, HistogramField.NeutralKills);
+            var wardmap = playerManager.GetWarmap(186347237);
+            var wordCloud = playerManager.GetWordCloud(186347237);
+            var ratings = playerManager.GetRatings(186347237);
+            var rankings = playerManager.GetRankings(186347237);
+            playerManager.Refresh(186347237);
 
             var heroManager = new HeroManager();
             var heroesStats = heroManager.GetHeroesStats();
-
+            
             Console.WriteLine("Hello World!");
         }
     }

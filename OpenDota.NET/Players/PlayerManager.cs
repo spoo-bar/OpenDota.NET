@@ -257,5 +257,207 @@ namespace OpenDota.NET.Players
 
             throw new Exception("Could not successfully get player's counts");
         }
+
+        public IEnumerable<HistogramData> GetHistogramData(int accountId, HistogramField field, SearchQuery query = null)
+        {
+            return GetHistogramDataAsync(accountId, field, query).GetAwaiter().GetResult();
+        }
+
+        public async Task<IEnumerable<HistogramData>> GetHistogramDataAsync(int accountId, HistogramField field, SearchQuery query = null)
+        {
+            var client = OpenDotaAPIWrapper.Client;
+            var queryStringParam = SearchQuery.GetQueryString(query);
+            using (var response = await client.GetAsync(string.Format("players/{0}/histograms/{1}?{2}", accountId, GetField(field), queryStringParam)))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+                    var histogramData = new List<HistogramData>();
+                    foreach (var data in JArray.Parse(result))
+                    {
+                        histogramData.Add(HistogramData.Deserialize(data));
+                    }
+                    return histogramData;
+                }
+            }
+
+            throw new Exception("Could not successfully get player's data");
+        }
+
+        public WardMap GetWarmap(int accountId, SearchQuery query = null)
+        {
+            return GetWardmapAsync(accountId, query).GetAwaiter().GetResult();
+        }
+
+        public async Task<WardMap> GetWardmapAsync(int accountId, SearchQuery query = null)
+        {
+            var client = OpenDotaAPIWrapper.Client;
+            var queryStringParam = SearchQuery.GetQueryString(query);
+            using (var response = await client.GetAsync(string.Format("players/{0}/wardmap", accountId)))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+                    return WardMap.Deserialize(result);
+                }
+            }
+
+            throw new Exception("Could not successfully get player's wardmap data");
+        }
+
+        public WordCloud GetWordCloud(int accountId, SearchQuery query = null)
+        {
+            return GetWordCloudAsync(accountId, query).GetAwaiter().GetResult();
+        }
+
+        public async Task<WordCloud> GetWordCloudAsync(int accountId, SearchQuery query = null)
+        {
+            var client = OpenDotaAPIWrapper.Client;
+            var queryStringParam = SearchQuery.GetQueryString(query);
+            using (var response = await client.GetAsync(string.Format("players/{0}/wordcloud", accountId)))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+                    return WordCloud.Deserialize(result);
+                }
+            }
+
+            throw new Exception("Could not successfully get player's wordcloud");
+        }
+
+        public IEnumerable<Rating> GetRatings(int accountId)
+        {
+            return GetRatingsAsync(accountId).GetAwaiter().GetResult();
+        }
+
+        public async Task<IEnumerable<Rating>> GetRatingsAsync(int accountId)
+        {
+            var client = OpenDotaAPIWrapper.Client;
+            using (var response = await client.GetAsync(string.Format("players/{0}/ratings", accountId)))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+
+                    var ratings = new List<Rating>();
+
+                    foreach (var item in JArray.Parse(result))
+                    {
+                        ratings.Add(Rating.Deserialize(item));
+                    }
+
+                    return ratings;
+                }
+            }
+            throw new Exception("Could not successfully get player's ratings");
+        }
+
+        public IEnumerable<Ranking> GetRankings(int accountId)
+        {
+            return GetRankingsAsync(accountId).GetAwaiter().GetResult();
+        }
+
+        public async Task<IEnumerable<Ranking>> GetRankingsAsync(int accountId)
+        {
+            var client = OpenDotaAPIWrapper.Client;
+            using (var response = await client.GetAsync(string.Format("players/{0}/rankings", accountId)))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+
+                    var rankings = new List<Ranking>();
+
+                    foreach (var item in JArray.Parse(result))
+                    {
+                        rankings.Add(Ranking.Deserialize(item));
+                    }
+
+                    return rankings;
+                }
+            }
+            throw new Exception("Could not successfully get player's rankings");
+        }
+
+        public async Task Refresh(int accountId)
+        {
+            var client = OpenDotaAPIWrapper.Client;
+            using (var response = await client.PostAsync(string.Format("players/{0}/refresh", accountId), null))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    return;
+                }
+            }
+            throw new Exception("Could not refresh player's data");
+        }
+
+        private static string GetField(HistogramField field)
+        {
+            switch (field)
+            {
+                case HistogramField.Kills:
+                    return "kills";
+                case HistogramField.ActionsPerMinute:
+                    return "actions_per_min";
+                case HistogramField.Assists:
+                    return "assists";
+                case HistogramField.Comeback:
+                    return "comeback";
+                case HistogramField.CourierKills:
+                    return "courier_kills";
+                case HistogramField.Deaths:
+                    return "deaths";
+                case HistogramField.Denies:
+                    return "denies";
+                case HistogramField.Duration:
+                    return "duration";
+                case HistogramField.EFFAt10:
+                    return "lane_efficiency_pct";
+                case HistogramField.GemsPurchased:
+                    return "purchase_gem";
+                case HistogramField.GoldPerMinute:
+                    return "gold_per_min";
+                case HistogramField.HeroDamage:
+                    return "hero_damage";
+                case HistogramField.HeroHealing:
+                    return "hero_healing";
+                case HistogramField.KDA:
+                    return "kda";
+                case HistogramField.LastHits:
+                    return "last_hits";
+                case HistogramField.Level:
+                    return "level";
+                case HistogramField.Loss:
+                    return "loss";
+                case HistogramField.MapPings:
+                    return "pings";
+                case HistogramField.NeutralKills:
+                    return "neutral_kills";
+                case HistogramField.ObserversPurchased:
+                    return "purchase_ward_observer";
+                case HistogramField.RapiersPurchased:
+                    return "purchase_rapier";
+                case HistogramField.SentriesPurchased:
+                    return "purchase_ward_sentry";
+                case HistogramField.Stomp:
+                    return "stomp";
+                case HistogramField.Stuns:
+                    return "stuns";
+                case HistogramField.Throw:
+                    return "throw";
+                case HistogramField.TowerDamage:
+                    return "tower_damage";
+                case HistogramField.TowerKills:
+                    return "tower_kills";
+                case HistogramField.TPsPurchased:
+                    return "purchase_tpscroll";
+                case HistogramField.XPPerMinute:
+                    return "xp_per_min";
+                default:
+                    return string.Empty;
+            };
+        }
     }
 }
