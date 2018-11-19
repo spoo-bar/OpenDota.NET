@@ -2,6 +2,7 @@
 using OpenDota.NET.Heroes;
 using OpenDota.NET.Matches;
 using OpenDota.NET.Players;
+using OpenDota.NET.Search;
 using System;
 using System.Collections.Generic;
 
@@ -59,6 +60,8 @@ namespace OpenDotaConsole
             var heroesStats = heroManager.GetHeroesStats();
 
             var metaData = OpenDotA.GetMetaData();
+
+            var results = new SearchManager().SearchPlayers("sumail");
             
             Console.WriteLine("Hello World!");
         }
