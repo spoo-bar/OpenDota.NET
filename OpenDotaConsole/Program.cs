@@ -58,11 +58,12 @@ namespace OpenDotaConsole
 
             var heroManager = new HeroManager();
             var heroesStats = heroManager.GetHeroesStats();
+            var players = heroManager.GetRankedPlayers(109);
 
             var metaData = OpenDotA.GetMetaData();
 
             var results = new SearchManager().SearchPlayers("sumail");
-            
+
             Console.WriteLine("Hello World!");
         }
     }

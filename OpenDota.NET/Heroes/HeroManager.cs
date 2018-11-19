@@ -33,5 +33,31 @@ namespace OpenDota.NET.Heroes
             }
             throw new Exception("Could not successfully get heroes data");
         }
+
+        public IEnumerable<Player> GetRankedPlayers(int heroId)
+        {
+            return GetRankedPlayersAsync(heroId).GetAwaiter().GetResult();
+        }
+
+        public async Task<IEnumerable<Player>> GetRankedPlayersAsync(int heroId)
+        {
+            var client = OpenDotaAPIWrapper.Client;
+            using (var response = await client.GetAsync("rankings?hero_id=" + heroId))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+                    var resultObj = JObject.Parse(result);
+                    var players = new List<Player>();
+                    foreach (var player in resultObj["rankings"])
+                    {
+                        players.Add(Player.Deserialize(player));
+                    }
+
+                    return players.OrderByDescending(h => h.Score);
+                }
+            }
+            throw new Exception("Could not successfully get ranking data");
+        }
     }
 }
