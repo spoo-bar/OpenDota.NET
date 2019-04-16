@@ -6,7 +6,8 @@ namespace OpenDota.NET
 {
     public class OpenDotaAPIWrapper
     {
-        private readonly static Uri openDotaAPIUrl = new Uri("https://api.opendota.com/api/");
+        private const string openDotaApiEndpoint = "https://api.opendota.com/api/";
+        private readonly static Uri openDotaAPIUrl = new Uri(openDotaApiEndpoint);
 
         private static HttpClient _client = null;
         private static object lockObj= new object();
