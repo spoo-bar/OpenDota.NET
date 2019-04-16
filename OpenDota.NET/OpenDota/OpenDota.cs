@@ -5,6 +5,11 @@ namespace OpenDota.NET
 {
     public class OpenDotA
     {
+        public static T GetClient<T>()
+        {
+            return default(T);
+        }
+
         public static MetaData GetMetaData()
         {
             return GetMetaDataAsync().GetAwaiter().GetResult();
